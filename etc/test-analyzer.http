@@ -1,0 +1,8 @@
+GET localhost:9200/_analyze
+Content-Type: application/json; charset=UTF-8
+
+{
+  "tokenizer" : "finnish",
+  "filter" : ["raudikko"],
+  "text" : "Testataan raudikon analyysiä tällä tavalla yksinkertaisesti."
+}
