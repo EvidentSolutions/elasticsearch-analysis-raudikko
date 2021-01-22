@@ -70,7 +70,9 @@ You can use the following filter options to customize the behaviour of the filte
 
 This plugin supercedes [elasticsearch-analysis-voikko](https://github.com/EvidentSolutions/elasticsearch-analysis-voikko) and
 is fully compatible with it (it provides a filter named `voikko` as a compatibility measure). Therefore, you can remove
-the old plugin from your Elasticsearch installation and replace it with this plugin without having to reindex anything. 
+the old plugin from your Elasticsearch installation and replace it with this plugin without having to reindex anything.
+Just make sure to uninstall the old plugin `bin/elasticsearch-plugin remove elasticsearch-analysis-voikko` when installing
+this one in place.
 
 ## License and copyright
  
