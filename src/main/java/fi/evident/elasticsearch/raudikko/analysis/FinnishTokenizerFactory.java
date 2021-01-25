@@ -30,9 +30,9 @@ public class FinnishTokenizerFactory extends AbstractTokenizerFactory {
 
     public FinnishTokenizerFactory(IndexSettings indexSettings,
                                    @SuppressWarnings("unused") Environment environment,
-                                   @SuppressWarnings("unused") String name, // TODO do we need name somewhere?
+                                   String name,
                                    Settings settings) {
-        super(indexSettings, settings);
+        super(indexSettings, settings, name);
     }
 
     @Override

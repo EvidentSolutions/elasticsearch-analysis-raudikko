@@ -6,7 +6,7 @@ The Raudikko Analysis plugin provides Finnish language analysis using [Raudikko]
 
 | Plugin version | Raudikko version | Elasticsearch versions |
 | -------------- | ---------------- | ---------------------- |
-| 0.1            | 0.1.1            | 7.3.2                  |
+| 0.1            | 0.1.1            | 7.3.2, 7.10.0          |
 
 If you are not installing the latest version, follow the links in the table to see installation instructions for the old version.
 
@@ -18,6 +18,12 @@ To install the plugin, run the command depending on your ES installation:
 
 ```
 bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases/download/v0.1/elasticsearch-analysis-raudikko-0.1-es7.3.2.zip
+```
+
+### Elasticsearch 7.10.0
+
+```
+bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases/download/v0.1/elasticsearch-analysis-raudikko-0.1-es7.10.0.zip
 ```
 
 ### Verify installation
@@ -70,7 +76,7 @@ You can use the following filter options to customize the behaviour of the filte
 
 ## Compatibility with elasticsearch-analysis-voikko
 
-This plugin supercedes [elasticsearch-analysis-voikko](https://github.com/EvidentSolutions/elasticsearch-analysis-voikko) and
+This plugin supersedes [elasticsearch-analysis-voikko](https://github.com/EvidentSolutions/elasticsearch-analysis-voikko) and
 is fully compatible with it (it provides a filter named `voikko` as a compatibility measure). Therefore, you can remove
 the old plugin from your Elasticsearch installation and replace it with this plugin without having to reindex anything.
 Just make sure to uninstall the old plugin `bin/elasticsearch-plugin remove elasticsearch-analysis-voikko` when installing
