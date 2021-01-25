@@ -2,14 +2,15 @@ plugins {
     `java-library`
 }
 
+val baseVersion = "0.1"
+val elasticsearchVersion = "7.3.2"
+
 group = "fi.evident.elasticsearch"
-version = "0.1"
+version = "$baseVersion-es$elasticsearchVersion"
 
 repositories {
     mavenCentral()
 }
-
-val elasticsearchVersion = "7.3.2"
 
 dependencies {
     compileOnly("org.elasticsearch:elasticsearch:$elasticsearchVersion")
