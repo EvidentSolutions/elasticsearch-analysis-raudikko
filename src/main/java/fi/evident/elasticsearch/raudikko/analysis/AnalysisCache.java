@@ -17,16 +17,22 @@
 
 package fi.evident.elasticsearch.raudikko.analysis;
 
+import org.cache2k.Cache;
+import org.cache2k.Cache2kBuilder;
+
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 final class AnalysisCache {
 
-    private final LRUCache<String, List<String>> cache;
+    private final Cache<String, List<String>> cache;
     private final ReentrantLock lock = new ReentrantLock(true);
 
     AnalysisCache(int cacheSize) {
-        cache = new LRUCache<>(cacheSize);
+        cache = new Cache2kBuilder<String, List<String>>() {}
+                .eternal(true)
+                .entryCapacity(cacheSize)
+                .build();
     }
 
     List<String> get(String word) {
