@@ -19,7 +19,10 @@ package fi.evident.elasticsearch.raudikko.analysis;
 
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
+import org.elasticsearch.SpecialPermission;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.function.Function;
 
@@ -28,13 +31,17 @@ final class AnalysisCache {
     private final Cache<String, List<String>> cache;
 
     AnalysisCache(int cacheSize) {
-        cache = new Cache2kBuilder<String, List<String>>() {}
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null)
+            sm.checkPermission(new SpecialPermission());
+
+        cache = AccessController.doPrivileged((PrivilegedAction<Cache<String, List<String>>>) () -> new Cache2kBuilder<String, List<String>>() {}
                 .eternal(true)
                 .entryCapacity(cacheSize)
-                .build();
+                .build());
     }
 
     List<String> computeIfAbsent(String word, Function<String, List<String>> func) {
-        return cache.computeIfAbsent(word, func);
+        return cache.computeIfAbsent(word, () -> func.apply(word));
     }
 }

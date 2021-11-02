@@ -4,7 +4,7 @@ plugins {
 
 val baseVersion = "0.1"
 val elasticsearchVersion = "7.3.2"
-val cache2kVersion = "2.4.1.Final"
+val cache2kVersion = "1.6.0.Final"
 
 group = "fi.evident.elasticsearch"
 version = "$baseVersion-es$elasticsearchVersion"
@@ -16,8 +16,7 @@ repositories {
 dependencies {
     compileOnly("org.elasticsearch:elasticsearch:$elasticsearchVersion")
     implementation("fi.evident.raudikko:raudikko:0.1.1")
-    implementation("org.cache2k:cache2k-api:${cache2kVersion}")
-    runtimeOnly("org.cache2k:cache2k-core:${cache2kVersion}")
+    implementation("org.cache2k:cache2k-all:${cache2kVersion}")
     
     testImplementation("org.elasticsearch:elasticsearch:$elasticsearchVersion")
     testImplementation(platform("org.junit:junit-bom:5.7.0"))
