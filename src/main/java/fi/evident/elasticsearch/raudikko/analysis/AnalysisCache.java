@@ -17,36 +17,30 @@
 
 package fi.evident.elasticsearch.raudikko.analysis;
 
+import org.elasticsearch.common.cache.Cache;
+import org.elasticsearch.common.cache.CacheBuilder;
+
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 final class AnalysisCache {
 
-    private final LRUCache<String, List<String>> cache;
-    private final ReentrantLock lock = new ReentrantLock(true);
+    // "Secondly, there's a is an LRU cache implementation in core Elasticsearch (org.elasticsearch.common.cache.Cache); 
+    // you should just use that and avoid this problem altogether."
+    // https://discuss.elastic.co/t/customize-java-security-manager-settings-provide-ability-to-turn-it-off/72303/5
+    private final Cache<String, List<String>> cache;
 
     AnalysisCache(int cacheSize) {
-        cache = new LRUCache<>(cacheSize);
+        CacheBuilder<String, List<String>> builder = CacheBuilder.builder();
+        builder.weigher((a, b) -> 1); // simple weigher in order to retain compatibility with cacheSize parameter, for now 
+        builder.setMaximumWeight(cacheSize);
+        this.cache = builder.build();
     }
 
     List<String> get(String word) {
-        // Note that it seems that we could use a read/write -lock here and grab only the read-lock
-        // when retrieving stuff from cache, but this will not work because the cache uses access-order,
-        // meaning that every read will actually mutate the cache.
-        lock.lock();
-        try {
-            return cache.get(word);
-        } finally {
-            lock.unlock();
-        }
+        return cache.get(word);
     }
 
     void put(String word, List<String> result) {
-        lock.lock();
-        try {
-            cache.put(word, result);
-        } finally {
-            lock.unlock();
-        }
+        cache.put(word, result);
     }
 }
