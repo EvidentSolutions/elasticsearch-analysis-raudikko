@@ -21,12 +21,11 @@ import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 
 final class AnalysisCache {
 
     private final Cache<String, List<String>> cache;
-    private final ReentrantLock lock = new ReentrantLock(true);
 
     AnalysisCache(int cacheSize) {
         cache = new Cache2kBuilder<String, List<String>>() {}
@@ -35,24 +34,7 @@ final class AnalysisCache {
                 .build();
     }
 
-    List<String> get(String word) {
-        // Note that it seems that we could use a read/write -lock here and grab only the read-lock
-        // when retrieving stuff from cache, but this will not work because the cache uses access-order,
-        // meaning that every read will actually mutate the cache.
-        lock.lock();
-        try {
-            return cache.get(word);
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    void put(String word, List<String> result) {
-        lock.lock();
-        try {
-            cache.put(word, result);
-        } finally {
-            lock.unlock();
-        }
+    List<String> computeIfAbsent(String word, Function<String, List<String>> func) {
+        return cache.computeIfAbsent(word, func);
     }
 }

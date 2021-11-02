@@ -86,12 +86,7 @@ final class RaudikkoTokenFilter extends TokenFilter {
 
     private List<String> analyze(CharSequence wordSeq) {
         String word = wordSeq.toString();
-        List<String> result = analysisCache.get(word);
-        if (result == null) {
-            result = analyzeUncached(word);
-            analysisCache.put(word, result);
-        }
-        return result;
+        return analysisCache.computeIfAbsent(word, this::analyzeUncached);
     }
 
     private List<String> analyzeUncached(String word) {
