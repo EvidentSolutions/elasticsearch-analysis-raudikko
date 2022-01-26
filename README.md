@@ -14,12 +14,10 @@ The plugin *should* support all 7.x.x versions, but Elasticsearch requires the p
 
 ## Installing
 
-To install the plugin, run the command depending on your ES installation: 
-
-### Example: Elasticsearch 7.10.0
+To install the plugin, run the following command, changing the version in URL to match your version of Elasticsearch:
 
 ```
-bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases/download/v0.1/elasticsearch-analysis-raudikko-0.1-es7.10.0.zip
+bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases/download/v0.1.1/elasticsearch-analysis-raudikko-0.1.1-es7.16.3.zip
 ```
 
 ### Verify installation
@@ -80,7 +78,7 @@ this one in place.
 
 ## License and copyright
  
-Copyright (C) 2021  Evident Solutions Oy
+Copyright (C) 2021-2022  Evident Solutions Oy
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
