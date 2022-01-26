@@ -2,7 +2,7 @@ plugins {
     `java-library`
 }
 
-val baseVersion = "0.1"
+val baseVersion = System.getProperty("baseVersion") ?: "0.1"
 val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "7.10.0"
 
 group = "fi.evident.elasticsearch"

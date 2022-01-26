@@ -1,0 +1,62 @@
+name: Release
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      # Assume that input tag is formatted like 'v1.2.3' and transforms that to '1.2.3'
+      - name: Normalize version
+        id: normalize-version
+        uses: actions/github-script@v5
+        with:
+          result-encoding: string
+          script: |
+            const tagName = context.payload.release.tag_name;
+            if (tagName.startsWith("v")) {
+                const version = tagName.substring(1);
+                console.log(`Setting version to ${version}`);
+                core.setOutput('version', version);
+            } else {
+                core.setFailed(`Release tag ${tagName} does not have a prefix 'v'`);
+            }
+    outputs:
+      version: ${{ steps.normalize-version.outputs.version }}
+
+  # TODO: duplication from build.yaml
+  build:
+    needs: [ prepare ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elasticsearchVersion: ['7.10.0', '7.16.3']
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build -DbaseVersion=${{ needs.prepare.outputs.version }} -DelasticsearchVersion=${{ matrix.elasticsearchVersion }}
+      - name: Upload distribution zips
+        uses: actions/upload-artifact@v2
+        with:
+          name: distribution-${{ matrix.elasticsearchVersion }}
+          path: build/distributions/*.zip
+          retention-days: 2
+          if-no-files-found: error
+
+  uploadArtifacts:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@release-2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: 'distribution-*'
