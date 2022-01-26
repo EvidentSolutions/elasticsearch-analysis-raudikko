@@ -3,7 +3,7 @@ plugins {
 }
 
 val baseVersion = "0.1"
-val elasticsearchVersion = "7.10.0"
+val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "7.10.0"
 
 group = "fi.evident.elasticsearch"
 version = "$baseVersion-es$elasticsearchVersion"
