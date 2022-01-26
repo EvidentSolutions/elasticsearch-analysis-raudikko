@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: tags/v${{ github.event.inputs.releaseVersion }}
+          ref: v${{ github.event.inputs.releaseVersion }}
       - uses: actions/setup-java@v1
         with:
           java-version: 8
