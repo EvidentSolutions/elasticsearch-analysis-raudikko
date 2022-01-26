@@ -1,0 +1,36 @@
+# Add a zip built for new ES-version to existing release
+name: Add release archive
+on:
+  workflow_dispatch:
+    inputs:
+      # TODO: detect this automatically from tag name
+      releaseVersion:
+        required: true
+        type: string
+        description: "Release to update"
+      elasticsearchVersion:
+        required: true
+        type: string
+        description: "Version of target Elasticsearch"
+
+# version: ${{ github.event.inputs.version }}
+jobs:
+  # TODO: duplication from build.yaml
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build -DbaseVersion=${{ github.event.inputs.releaseVersion }} -DelasticsearchVersion=${{ github.event.inputs.elasticsearchVersion }}
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@release-2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          releaseId: v${{ github.event.inputs.releaseVersion }}
+          args: 'build/distributions/*.zip'
