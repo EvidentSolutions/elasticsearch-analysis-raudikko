@@ -3,7 +3,7 @@ plugins {
 }
 
 val baseVersion = System.getProperty("baseVersion") ?: "0.1"
-val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "7.10.0"
+val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "8.5.3"
 
 group = "fi.evident.elasticsearch"
 version = "$baseVersion-es$elasticsearchVersion"
@@ -34,7 +34,7 @@ val distributionZip = tasks.register<Zip>("distributionZip") {
     from(file("src/main/plugin-metadata")) {
         expand(
             "pluginVersion" to project.version,
-            "javaVersion" to System.getProperty("java.specification.version"),
+            "javaVersion" to java.toolchain.languageVersion.get().asInt(),
             "elasticsearchVersion" to elasticsearchVersion
         )
     }
@@ -48,7 +48,6 @@ artifacts {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-        vendor.set(JvmVendorSpec.ADOPTOPENJDK)
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }

@@ -36,7 +36,7 @@ public class RaudikkoTokenFilterFactory extends AbstractTokenFilterFactory {
                                     @SuppressWarnings("unused") Environment environment,
                                     String name,
                                     Settings settings) {
-        super(indexSettings, name, settings);
+        super(name, settings);
 
         cfg.analyzeAll = settings.getAsBoolean("analyzeAll", cfg.analyzeAll);
         cfg.minimumWordSize = settings.getAsInt("minimumWordSize", cfg.minimumWordSize);
