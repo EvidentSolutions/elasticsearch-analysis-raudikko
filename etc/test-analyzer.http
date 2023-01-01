@@ -1,3 +1,4 @@
+### test analyzer
 GET localhost:9200/_analyze
 Content-Type: application/json; charset=UTF-8
 
@@ -6,3 +7,12 @@ Content-Type: application/json; charset=UTF-8
   "filter" : ["raudikko"],
   "text" : "Testataan raudikon analyysiä tällä tavalla yksinkertaisesti."
 }
+
+### check status
+GET http://localhost:9200/_cluster/health?pretty
+
+### check version
+GET http://localhost:9200
+
+### show plugins
+GET http://localhost:9200/_cat/plugins?v=true&s=component&h=component,version,description

@@ -20,6 +20,16 @@ To install the plugin, run the following command, changing the version in URL to
 bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases/download/v0.1.1/elasticsearch-analysis-raudikko-0.1.1-es7.16.3.zip
 ```
 
+### Docker
+Building the plugin and running with docker
+```
+./gradlew build --DelastisearchVersion=8.5.3
+cd etc
+docker compose build --build-arg "ES_VERSION=8.5.3"
+docker compose up
+```
+Elasticsearch should be running and available at port 9200
+
 ### Verify installation
 
 After installing the plugin, you can quickly verify that it works by executing:
