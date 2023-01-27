@@ -22,6 +22,9 @@ public class RaudikkoTokenFilterConfiguration {
     /** If true, use analysis candidates returned by Raudikko, otherwise use only the first result. */
     boolean analyzeAll = true;
 
+    /** If true, split compound words to parts */
+    boolean splitCompoundWords = false;
+
     /** Words shorter than this threshold are ignored */
     int minimumWordSize = 3;
 

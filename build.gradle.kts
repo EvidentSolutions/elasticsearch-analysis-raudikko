@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     compileOnly("org.elasticsearch:elasticsearch:$elasticsearchVersion")
-    implementation("fi.evident.raudikko:raudikko:0.1.1")
+    implementation("fi.evident.raudikko:raudikko:0.1.2")
 
     testImplementation("org.elasticsearch:elasticsearch:$elasticsearchVersion")
     testImplementation(platform("org.junit:junit-bom:5.7.0"))

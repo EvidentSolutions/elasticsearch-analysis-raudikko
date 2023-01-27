@@ -71,12 +71,13 @@ Include `finnish` tokenizer and `raudikko` filter in your analyzer, for example:
 
 You can use the following filter options to customize the behaviour of the filter:
 
-| Parameter         | Default value    | Description                                      |
-|-------------------|------------------|--------------------------------------------------|
-| analyzeAll        | true             | Use all analysis possibilities or just the first |
-| minimumWordSize   | 3                | minimum length of words to analyze               |
-| maximumWordSize   | 100              | maximum length of words to analyze               |
-| analysisCacheSize | 1024             | number of analysis results to cache              |
+| Parameter           | Default value | Description                                      |
+|---------------------|---------------|--------------------------------------------------|
+| analyzeAll          | true          | Use all analysis possibilities or just the first |
+| splitCompoundWords  | false         | Split analysed compound words to its parts       |
+| minimumWordSize     | 3             | minimum length of words to analyze               |
+| maximumWordSize     | 100           | maximum length of words to analyze               |
+| analysisCacheSize   | 1024          | number of analysis results to cache              |
 
 ## Compatibility with elasticsearch-analysis-voikko
 
