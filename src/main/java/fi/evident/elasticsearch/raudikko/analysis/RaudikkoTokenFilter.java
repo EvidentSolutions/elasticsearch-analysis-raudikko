@@ -18,6 +18,7 @@
 
 package fi.evident.elasticsearch.raudikko.analysis;
 
+import fi.evident.raudikko.Analysis;
 import fi.evident.raudikko.Analyzer;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -71,16 +72,16 @@ final class RaudikkoTokenFilter extends TokenFilter {
         if (!isCandidateForAnalysis(charTermAttribute))
             return;
 
-        List<String> baseForms = analyze(charTermAttribute);
-        if (baseForms.isEmpty())
+        List<String> analysis = analyze(charTermAttribute);
+        if (analysis.isEmpty())
             return;
 
-        charTermAttribute.setEmpty().append(baseForms.get(0));
+        charTermAttribute.setEmpty().append(analysis.get(0));
 
-        if (cfg.analyzeAll && baseForms.size() > 1) {
+        if ((cfg.analyzeAll || cfg.splitCompoundWords) && analysis.size() > 1) {
             current = captureState();
 
-            alternatives.addAll(baseForms.subList(1, baseForms.size()));
+            alternatives.addAll(analysis.subList(1, analysis.size()));
         }
     }
 
@@ -95,16 +96,31 @@ final class RaudikkoTokenFilter extends TokenFilter {
     }
 
     private List<String> analyzeUncached(String word) {
-        List<String> results = raudikkoAnalyzer.baseForms(word);
 
-        switch (results.size()) {
-            case 0:
-                return Collections.emptyList();
-            case 1:
-                return Collections.singletonList(results.get(0));
-            default:
-                return new ArrayList<>(results);
+        List<Analysis> analysisResults = raudikkoAnalyzer.analyze(word);
+
+        if (analysisResults.isEmpty())
+            return Collections.emptyList();
+
+        List<String> results = new ArrayList<>();
+
+        for (Analysis analysis : analysisResults) {
+            String baseForm = analysis.getBaseForm();
+            if (baseForm != null && !results.contains(baseForm)) {
+                results.add(baseForm);
+            }
+
+            List<String> baseFormParts = analysis.getBaseFormParts();
+            if (baseFormParts != null) {
+                for (String baseFormPart : baseFormParts) {
+                    if (!results.contains(baseFormPart)) {
+                        results.add(baseFormPart);
+                    }
+                }
+            }
         }
+
+        return results;
     }
 
     private void outputAlternative(String token) {

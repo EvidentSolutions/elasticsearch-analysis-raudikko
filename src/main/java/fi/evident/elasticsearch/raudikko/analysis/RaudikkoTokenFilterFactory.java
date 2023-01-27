@@ -17,6 +17,7 @@
 
 package fi.evident.elasticsearch.raudikko.analysis;
 
+import fi.evident.raudikko.AnalyzerConfiguration;
 import fi.evident.raudikko.Morphology;
 import org.apache.lucene.analysis.TokenStream;
 import org.elasticsearch.common.settings.Settings;
@@ -39,6 +40,7 @@ public class RaudikkoTokenFilterFactory extends AbstractTokenFilterFactory {
         super(name, settings);
 
         cfg.analyzeAll = settings.getAsBoolean("analyzeAll", cfg.analyzeAll);
+        cfg.splitCompoundWords = settings.getAsBoolean("splitCompoundWords", cfg.splitCompoundWords);
         cfg.minimumWordSize = settings.getAsInt("minimumWordSize", cfg.minimumWordSize);
         cfg.maximumWordSize = settings.getAsInt("maximumWordSize", cfg.maximumWordSize);
 
@@ -50,6 +52,21 @@ public class RaudikkoTokenFilterFactory extends AbstractTokenFilterFactory {
 
     @Override
     public TokenStream create(TokenStream tokenStream) {
-        return new RaudikkoTokenFilter(tokenStream, morphology.newAnalyzer(), analysisCache, cfg);
+        return createTokenFilter(tokenStream, cfg, analysisCache, morphology);
+    }
+
+    public static RaudikkoTokenFilter createTokenFilter(TokenStream tokenStream,
+                                                        RaudikkoTokenFilterConfiguration filterCfg,
+                                                        AnalysisCache analysisCache,
+                                                        Morphology morphology) {
+        AnalyzerConfiguration analyzerCfg = new AnalyzerConfiguration();
+        analyzerCfg.setIncludeStructure(false);
+        analyzerCfg.setIncludeBasicAttributes(false);
+        analyzerCfg.setIncludeFstOutput(false);
+        analyzerCfg.setIncludeOrganizationNameAnalysis(false);
+        analyzerCfg.setIncludeBaseForm(true);
+        analyzerCfg.setIncludeBaseFormParts(filterCfg.splitCompoundWords);
+
+        return new RaudikkoTokenFilter(tokenStream, morphology.newAnalyzer(analyzerCfg), analysisCache, filterCfg);
     }
 }

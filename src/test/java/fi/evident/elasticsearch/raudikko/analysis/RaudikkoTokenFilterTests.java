@@ -96,6 +96,26 @@ public class RaudikkoTokenFilterTests  {
         assertTokens("rippi-isälle", token("rippi-isälle", "rippi-isä", 1));
     }
 
+    @Test
+    public void testCompoundWordsWithParts() {
+        configuration.splitCompoundWords = true;
+        assertTokens("lammasfarmeineen",
+                token("lammasfarmeineen", "lammasfarmi", 1),
+                token("lammasfarmeineen", "lammas", 0),
+                token("lammasfarmeineen", "farmi", 0)
+        );
+        assertTokens("tämä on moniosainen lammasfarmi",
+                token("tämä", "tämä", 1),
+                token("on", "on", 1),
+                token("moniosainen", "moniosainen", 1),
+                token("moniosainen", "moni", 0),
+                token("moniosainen", "osa", 0),
+                token("lammasfarmi", "lammasfarmi", 1),
+                token("lammasfarmi", "lammas", 0),
+                token("lammasfarmi", "farmi", 0)
+        );
+    }
+
     private static TokenData token(String original, String token, int positionIncrement) {
         return new TokenData(original, token, positionIncrement);
     }
@@ -110,7 +130,7 @@ public class RaudikkoTokenFilterTests  {
             @Override
             protected TokenStreamComponents createComponents(String fieldName) {
                 Tokenizer source = new FinnishTokenizer();
-                TokenStream filter = new RaudikkoTokenFilter(source, MorphologyFactory.getInstance().newAnalyzer(), new AnalysisCache(100), configuration);
+                TokenStream filter = RaudikkoTokenFilterFactory.createTokenFilter(source, configuration, new AnalysisCache(100), MorphologyFactory.getInstance());
                 return new TokenStreamComponents(source, filter);
             }
         };
