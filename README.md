@@ -23,7 +23,7 @@ bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsear
 ### Docker
 Building the plugin and running with docker
 ```
-./gradlew build --DelastisearchVersion=8.5.3
+./gradlew build -DelasticsearchVersion=8.5.3
 cd etc
 docker compose build --build-arg "ES_VERSION=8.5.3"
 docker compose up
@@ -88,7 +88,7 @@ Just make sure to uninstall the old plugin `bin/elasticsearch-plugin remove elas
 this one in place.
 
 ## License and copyright
- 
+
 Copyright (C) 2021-2022  Evident Solutions Oy
 
 This program is free software: you can redistribute it and/or modify
