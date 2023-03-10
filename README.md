@@ -4,13 +4,16 @@ The Raudikko Analysis plugin provides Finnish language analysis using [Raudikko]
 
 ## Supported versions
 
-| Plugin version | Raudikko version | Elasticsearch versions |
-| -------------- | ---------------- | ---------------------- |
-| 0.1.1          | 0.1.1            | 7.x.x                  |
-| 0.1            | 0.1.1            | 7.3.2, 7.10.0          |
+| Plugin version | Raudikko version | Elasticsearch versions | OpenSearch versions |
+|----------------|------------------|------------------------|---------------------|
+| 0.2.0          | 0.1.1            | 8.5.3                  | 2.5.0               |
+| 0.1.2          | 0.1.1            | 8.5.3                  |                     |
+| 0.1.1          | 0.1.1            | 7.x.x                  |                     |
+| 0.1            | 0.1.1            | 7.3.2, 7.10.0          |                     |
 
-The plugin *should* support all 7.x.x versions, but Elasticsearch requires the plugin to declare an exact ES version, so each release of the plugin has several packages per ES version. Check [releases](https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases) if the version you need is included, and if not, please create an issue requesting support for that version.
-
+The plugin *should* support all 7.x.x versions, but Elasticsearch requires the plugin to declare an exact ES version,
+so each release of the plugin has several packages per ES version. Check [releases](https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases)
+if the version you need is included, and if not, please create an issue requesting support for that version.
 
 ## Installing
 
@@ -21,14 +24,15 @@ bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsear
 ```
 
 ### Docker
-Building the plugin and running with docker
+
+Building the plugin for ElasticSearch and OpensSearch and running with Docker:
+
 ```
-./gradlew build -DelasticsearchVersion=8.5.3
-cd etc
-docker compose build --build-arg "ES_VERSION=8.5.3"
-docker compose up
+docker compose build
+docker compose up -d
 ```
-Elasticsearch should be running and available at port 9200
+
+Elasticsearch and OpenSearch should be running and available on your localhost.
 
 ### Verify installation
 

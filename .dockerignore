@@ -1,0 +1,13 @@
+/.git/
+/.github/
+/.gradle/
+/.idea/
+/build/
+/etc/
+.dockerignore
+.editorconfig
+.gitignore
+LICENSE
+docker-compose.yml
+Dockerfile
+*.md
