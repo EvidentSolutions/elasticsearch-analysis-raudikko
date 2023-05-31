@@ -110,11 +110,21 @@ public class RaudikkoTokenFilterTests  {
                 token("moniosainen", "moniosainen", 1),
                 token("moniosainen", "moni", 0),
                 token("moniosainen", "osa", 0),
+                token("moniosainen", "osainen", 0),
                 token("lammasfarmi", "lammasfarmi", 1),
                 token("lammasfarmi", "lammas", 0),
                 token("lammasfarmi", "farmi", 0)
         );
+        assertTokens("Ilmajoki-kentällä pesäpalloillaan",
+            token("Ilmajoki-kentällä", "Ilmajoki-kenttä", 1),
+            token("Ilmajoki-kentällä", "Ilmajoki", 0),
+            token("Ilmajoki-kentällä", "kenttä", 0),
+            token("pesäpalloillaan", "pesäpallo", 1),
+            token("pesäpalloillaan", "pesä", 0),
+            token("pesäpalloillaan", "pallo", 0)
+        );
     }
+
 
     private static TokenData token(String original, String token, int positionIncrement) {
         return new TokenData(original, token, positionIncrement);

@@ -5,7 +5,9 @@ The Raudikko Analysis plugin provides Finnish language analysis using [Raudikko]
 ## Supported versions
 
 | Plugin version | Raudikko version | Elasticsearch versions |
-| -------------- | ---------------- | ---------------------- |
+|----------------|------------------|------------------------|
+| 0.1.3          | 0.1.4            | 8.x.x                  |
+| 0.1.2          | 0.1.2            | 8.x.x                  |
 | 0.1.1          | 0.1.1            | 7.x.x                  |
 | 0.1            | 0.1.1            | 7.3.2, 7.10.0          |
 
