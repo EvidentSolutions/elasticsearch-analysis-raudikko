@@ -6,12 +6,11 @@ The Raudikko Analysis plugin provides Finnish language analysis using [Raudikko]
 
 | Plugin version | Raudikko version | Elasticsearch versions |
 |----------------|------------------|------------------------|
-| 0.1.3          | 0.1.4            | 8.x.x                  |
 | 0.1.2          | 0.1.2            | 8.x.x                  |
 | 0.1.1          | 0.1.1            | 7.x.x                  |
 | 0.1            | 0.1.1            | 7.3.2, 7.10.0          |
 
-The plugin *should* support all 7.x.x versions, but Elasticsearch requires the plugin to declare an exact ES version, so each release of the plugin has several packages per ES version. Check [releases](https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases) if the version you need is included, and if not, please create an issue requesting support for that version.
+The plugin *should* support all 8.x.x versions, but Elasticsearch requires the plugin to declare an exact ES version, so each release of the plugin has several packages per ES version. Check [releases](https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases) if the version you need is included, and if not, please create an issue requesting support for that version.
 
 Looking for a version for OpenSearch? Check out [opensearch-analysis-raudikko](https://github.com/EvidentSolutions/opensearch-analysis-raudikko).
 
