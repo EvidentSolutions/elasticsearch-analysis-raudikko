@@ -20,31 +20,25 @@ package fi.evident.elasticsearch.raudikko.analysis;
 import fi.evident.raudikko.AnalyzerConfiguration;
 import fi.evident.raudikko.Morphology;
 import org.apache.lucene.analysis.TokenStream;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
-import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.index.analysis.AbstractTokenFilterFactory;
+import org.elasticsearch.plugin.Inject;
+import org.elasticsearch.plugin.NamedComponent;
+import org.elasticsearch.plugin.analysis.TokenFilterFactory;
 
-public class RaudikkoTokenFilterFactory extends AbstractTokenFilterFactory {
+@NamedComponent("raudikko")
+public class RaudikkoTokenFilterFactory implements TokenFilterFactory {
 
     private final AnalysisCache analysisCache;
-
     private final RaudikkoTokenFilterConfiguration cfg = new RaudikkoTokenFilterConfiguration();
-
     private final Morphology morphology;
 
-    public RaudikkoTokenFilterFactory(IndexSettings indexSettings,
-                                    @SuppressWarnings("unused") Environment environment,
-                                    String name,
-                                    Settings settings) {
-        super(name, settings);
+    @Inject
+    public RaudikkoTokenFilterFactory(RaudikkoTokenFilterSettings settings) {
+        cfg.analyzeAll = settings.analyzeAll();
+        cfg.splitCompoundWords = settings.splitCompoundWords();
+        cfg.minimumWordSize = settings.minimumWordSize();
+        cfg.maximumWordSize = settings.maximumWordSize();
 
-        cfg.analyzeAll = settings.getAsBoolean("analyzeAll", cfg.analyzeAll);
-        cfg.splitCompoundWords = settings.getAsBoolean("splitCompoundWords", cfg.splitCompoundWords);
-        cfg.minimumWordSize = settings.getAsInt("minimumWordSize", cfg.minimumWordSize);
-        cfg.maximumWordSize = settings.getAsInt("maximumWordSize", cfg.maximumWordSize);
-
-        analysisCache = new AnalysisCache(settings.getAsInt("analysisCacheSize", 1024));
+        analysisCache = new AnalysisCache(settings.analysisCacheSize());
 
         // TODO support configurable morphology
         this.morphology = MorphologyFactory.getInstance();
@@ -55,10 +49,10 @@ public class RaudikkoTokenFilterFactory extends AbstractTokenFilterFactory {
         return createTokenFilter(tokenStream, cfg, analysisCache, morphology);
     }
 
-    public static RaudikkoTokenFilter createTokenFilter(TokenStream tokenStream,
-                                                        RaudikkoTokenFilterConfiguration filterCfg,
-                                                        AnalysisCache analysisCache,
-                                                        Morphology morphology) {
+    static RaudikkoTokenFilter createTokenFilter(TokenStream tokenStream,
+                                                 RaudikkoTokenFilterConfiguration filterCfg,
+                                                 AnalysisCache analysisCache,
+                                                 Morphology morphology) {
         AnalyzerConfiguration analyzerCfg = new AnalyzerConfiguration();
         analyzerCfg.setIncludeStructure(false);
         analyzerCfg.setIncludeBasicAttributes(false);

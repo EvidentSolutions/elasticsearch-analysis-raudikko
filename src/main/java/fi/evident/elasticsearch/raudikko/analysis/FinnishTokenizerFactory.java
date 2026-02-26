@@ -18,22 +18,14 @@
 package fi.evident.elasticsearch.raudikko.analysis;
 
 import org.apache.lucene.analysis.Tokenizer;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
-import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.index.analysis.AbstractTokenizerFactory;
+import org.elasticsearch.plugin.NamedComponent;
+import org.elasticsearch.plugin.analysis.TokenizerFactory;
 
 /**
  * Factory that creates {@link FinnishTokenizer}.
  */
-public class FinnishTokenizerFactory extends AbstractTokenizerFactory {
-
-    public FinnishTokenizerFactory(IndexSettings indexSettings,
-                                   @SuppressWarnings("unused") Environment environment,
-                                   String name,
-                                   Settings settings) {
-        super(indexSettings, settings, name);
-    }
+@NamedComponent("finnish")
+public class FinnishTokenizerFactory implements TokenizerFactory {
 
     @Override
     public Tokenizer create() {

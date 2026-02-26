@@ -2,8 +2,9 @@ plugins {
     `java-library`
 }
 
-val baseVersion = System.getProperty("baseVersion") ?: "0.1"
-val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "8.5.3"
+val baseVersion = System.getProperty("baseVersion") ?: "0.2"
+val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "9.3.0"
+val luceneVersion = System.getProperty("luceneVersion") ?: "10.1.0"
 
 group = "fi.evident.elasticsearch"
 version = "$baseVersion-es$elasticsearchVersion"
@@ -13,11 +14,15 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.elasticsearch:elasticsearch:$elasticsearchVersion")
+    compileOnly("org.elasticsearch.plugin:elasticsearch-plugin-api:$elasticsearchVersion")
+    compileOnly("org.elasticsearch.plugin:elasticsearch-plugin-analysis-api:$elasticsearchVersion")
+    compileOnly("org.apache.lucene:lucene-analysis-common:$luceneVersion")
     implementation("fi.evident.raudikko:raudikko:0.1.4")
 
-    testImplementation("org.elasticsearch:elasticsearch:$elasticsearchVersion")
-    testImplementation(platform("org.junit:junit-bom:5.7.0"))
+    testImplementation("org.elasticsearch.plugin:elasticsearch-plugin-api:$elasticsearchVersion")
+    testImplementation("org.elasticsearch.plugin:elasticsearch-plugin-analysis-api:$elasticsearchVersion")
+    testImplementation("org.apache.lucene:lucene-analysis-common:$luceneVersion")
+    testImplementation(platform("org.junit:junit-bom:5.11.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
@@ -48,6 +53,6 @@ artifacts {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
