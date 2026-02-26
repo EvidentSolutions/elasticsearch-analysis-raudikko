@@ -37,7 +37,7 @@ public class RaudikkoTokenFilterFactory extends AbstractTokenFilterFactory {
                                     @SuppressWarnings("unused") Environment environment,
                                     String name,
                                     Settings settings) {
-        super(name, settings);
+        super(name);
 
         cfg.analyzeAll = settings.getAsBoolean("analyzeAll", cfg.analyzeAll);
         cfg.splitCompoundWords = settings.getAsBoolean("splitCompoundWords", cfg.splitCompoundWords);

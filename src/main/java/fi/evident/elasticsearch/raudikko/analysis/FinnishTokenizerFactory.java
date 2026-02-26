@@ -32,7 +32,7 @@ public class FinnishTokenizerFactory extends AbstractTokenizerFactory {
                                    @SuppressWarnings("unused") Environment environment,
                                    String name,
                                    Settings settings) {
-        super(indexSettings, settings, name);
+        super(name);
     }
 
     @Override
