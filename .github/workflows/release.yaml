@@ -10,7 +10,7 @@ jobs:
       # Assume that input tag is formatted like 'v1.2.3' and transforms that to '1.2.3'
       - name: Normalize version
         id: normalize-version
-        uses: actions/github-script@v5
+        uses: actions/github-script@v9
         with:
           result-encoding: string
           script: |
@@ -34,14 +34,14 @@ jobs:
         elasticsearchVersion: ['8.11.1', '8.5.3']
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
         with:
+          distribution: 'temurin'
           java-version: 17
-      - uses: gradle/actions/wrapper-validation@v3
-      - uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build -DbaseVersion=${{ needs.prepare.outputs.version }} -DelasticsearchVersion=${{ matrix.elasticsearchVersion }}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Build with Gradle
+        run: ./gradlew build -DbaseVersion=${{ needs.prepare.outputs.version }} -DelasticsearchVersion=${{ matrix.elasticsearchVersion }}
       - name: Upload the artifacts
         uses: skx/github-action-publish-binaries@release-2.0
         env:
