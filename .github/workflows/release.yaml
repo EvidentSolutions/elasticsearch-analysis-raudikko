@@ -38,7 +38,7 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 21
       - uses: gradle/actions/setup-gradle@v6
       - name: Build with Gradle
         run: ./gradlew build -DbaseVersion=${{ needs.prepare.outputs.version }} -DelasticsearchVersion=${{ matrix.elasticsearchVersion }}
