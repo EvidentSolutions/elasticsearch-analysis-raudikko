@@ -1,8 +1,7 @@
-version: "3.9"
 services:
   elasticsearch:
     build:
-      dockerfile: /etc/Dockerfile
+      dockerfile: etc/Dockerfile
       context: ../
       # change version here or use
       # docker compose build --build-arg "ES_VERSION=<custom_version>"

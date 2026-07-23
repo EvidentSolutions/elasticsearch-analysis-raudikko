@@ -1,25 +1,31 @@
 plugins {
     `java-library`
+    kotlin("jvm")
 }
 
-val baseVersion = System.getProperty("baseVersion") ?: "0.1"
-val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "8.5.3"
+version = System.getProperty("baseVersion") ?: "0.2"
+val elasticsearchVersion = System.getProperty("elasticsearchVersion") ?: "9.3.0"
+val luceneVersion = System.getProperty("luceneVersion") ?: "10.1.0"
 
 group = "fi.evident.elasticsearch"
-version = "$baseVersion-es$elasticsearchVersion"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("org.elasticsearch:elasticsearch:$elasticsearchVersion")
+    compileOnly("org.elasticsearch.plugin:elasticsearch-plugin-api:${elasticsearchVersion}")
+    compileOnly("org.elasticsearch.plugin:elasticsearch-plugin-analysis-api:${elasticsearchVersion}")
+    compileOnly("org.apache.lucene:lucene-analysis-common:${luceneVersion}")
     implementation("fi.evident.raudikko:raudikko:0.1.4")
 
-    testImplementation("org.elasticsearch:elasticsearch:$elasticsearchVersion")
+    testImplementation("org.elasticsearch.plugin:elasticsearch-plugin-api:${elasticsearchVersion}")
+    testImplementation("org.elasticsearch.plugin:elasticsearch-plugin-analysis-api:${elasticsearchVersion}")
+    testImplementation("org.apache.lucene:lucene-analysis-common:${luceneVersion}")
     testImplementation(platform("org.junit:junit-bom:6.1.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(kotlin("test"))
 }
 
 tasks.withType<JavaCompile> {
