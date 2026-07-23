@@ -4,33 +4,52 @@ The Raudikko Analysis plugin provides Finnish language analysis using [Raudikko]
 
 ## Supported versions
 
-| Plugin version | Raudikko version | Elasticsearch versions |
-|----------------|------------------|------------------------|
-| 0.1.2          | 0.1.2            | 8.x.x                  |
-| 0.1.1          | 0.1.1            | 7.x.x                  |
-| 0.1            | 0.1.1            | 7.3.2, 7.10.0          |
+Since 0.2, the plugin is built against Elasticsearch's [stable plugin API](https://www.elastic.co/guide/en/elasticsearch/plugins/current/plugin-api.html),
+so a single package works with the Elasticsearch version it was built for and all later versions, instead of needing a
+separate build per Elasticsearch version.
 
-The plugin *should* support all 8.x.x versions, but Elasticsearch requires the plugin to declare an exact ES version, so each release of the plugin has several packages per ES version. Check [releases](https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases) if the version you need is included, and if not, please create an issue requesting support for that version.
+| Plugin version | Raudikko version | Elasticsearch versions |
+|----------------|-------------------|-------------------------|
+| 0.2            | 0.1.4             | 9.3.0 and later         |
+| 0.1.2          | 0.1.2             | 8.x.x                   |
+| 0.1.1          | 0.1.1             | 7.x.x                   |
+| 0.1            | 0.1.1             | 7.3.2, 7.10.0           |
+
+Need a version for Elasticsearch < 9.3.0? Check the [older releases](https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases), which still ship per-ES-version packages.
 
 Looking for a version for OpenSearch? Check out [opensearch-analysis-raudikko](https://github.com/EvidentSolutions/opensearch-analysis-raudikko).
 
 ## Installing
 
-To install the plugin, run the following command, changing the version in URL to match your version of Elasticsearch:
+Download the plugin zip from the [releases page](https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases) and install it with:
 
 ```
-bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases/download/v0.1.1/elasticsearch-analysis-raudikko-0.1.1-es7.16.3.zip
+bin/elasticsearch-plugin install https://github.com/EvidentSolutions/elasticsearch-analysis-raudikko/releases/download/v0.2/elasticsearch-analysis-raudikko-0.2.zip
 ```
+
+> [!NOTE]
+> `elasticsearch-plugin install` runs as a short-lived tool with a small default heap, which can run out of memory
+> while scanning the plugin's classes. If you hit an `OutOfMemoryError` during installation, retry with a larger
+> heap: `CLI_JAVA_OPTS="-Xmx512m" bin/elasticsearch-plugin install ...`.
 
 ### Docker
-Building the plugin and running with docker
+
+Building the plugin and running it with Docker:
 ```
-./gradlew build -DelasticsearchVersion=8.5.3
+./gradlew build
 cd etc
-docker compose build --build-arg "ES_VERSION=8.5.3"
+docker compose build
 docker compose up
 ```
-Elasticsearch should be running and available at port 9200
+Elasticsearch should then be running and available at http://localhost:9200. Note that `docker compose up` is required
+to publish the port — `docker compose run` does not publish ports unless you add `--service-ports`.
+
+To build against a different (newer) Elasticsearch version, override the version on both the Gradle build and the
+Docker build:
+```
+./gradlew build -DelasticsearchVersion=9.4.0
+docker compose build --build-arg "ES_VERSION=9.4.0"
+```
 
 ### Verify installation
 
@@ -91,7 +110,7 @@ this one in place.
 
 ## License and copyright
 
-Copyright (C) 2021-2022  Evident Solutions Oy
+Copyright (C) 2021-2026  Evident Solutions Oy
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
