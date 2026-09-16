@@ -39,8 +39,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build -DbaseVersion=${{ needs.prepare.outputs.version }}
       - name: Upload the artifacts
-        uses: skx/github-action-publish-binaries@release-2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: 'build/distributions/*.zip'
+        run: gh release upload ${{ github.event.release.tag_name }} build/distributions/*.zip --clobber

@@ -27,15 +27,7 @@ jobs:
             - uses: gradle/actions/setup-gradle@v6
             - name: Build with Gradle
               run: ./gradlew build -DbaseVersion=${{ github.event.inputs.releaseVersion }} -DelasticsearchVersion=${{ github.event.inputs.elasticsearchVersion }}
-            - name: Get release ID
-              id: get_release_id
-              run: |
-                  release_id=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/v${{ github.event.inputs.releaseVersion }} | jq -r '.id')
-                  echo "::set-output name=releaseId::$release_id"
             - name: Upload the artifacts
-              uses: skx/github-action-publish-binaries@release-2.0
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  releaseId: ${{ steps.get_release_id.outputs.releaseId }}
-                  args: 'build/distributions/*.zip'
+              run: gh release upload v${{ github.event.inputs.releaseVersion }} build/distributions/*.zip --clobber
